@@ -277,4 +277,98 @@
       appendWsMessage(msg.payload);
     }
   });
+
+  // --- Save dialog ---
+  document.getElementById('http-save').addEventListener('click', () => {
+    const url = document.getElementById('http-url').value.trim();
+    if (!url) {
+      showError('URL is required');
+      return;
+    }
+    const name = prompt('Save as (name):');
+    if (!name) return;
+    const method = document.getElementById('http-method').value;
+    const bodyType = document.querySelector('input[name="body-type"]:checked').value;
+    const body = bodyType === 'none' ? undefined : document.getElementById('body-input').value;
+    vscode.postMessage({
+      type: 'collection.save',
+      payload: {
+        item: { name, method, url, headers: collectHeaders(), body, bodyType }
+      }
+    });
+  });
+
+  // --- Collections tab ---
+  document.getElementById('collections-refresh').addEventListener('click', () => {
+    vscode.postMessage({ type: 'collection.list', payload: {} });
+  });
+
+  document.getElementById('history-refresh').addEventListener('click', () => {
+    vscode.postMessage({ type: 'history.list', payload: {} });
+  });
+
+  function renderList(containerId, items, source) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = '';
+    if (!items.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-list';
+      empty.textContent = source === 'history' ? 'No history yet' : 'No saved requests';
+      el.appendChild(empty);
+      return;
+    }
+    for (const item of items) {
+      const div = document.createElement('div');
+      div.className = 'list-item';
+      const main = source === 'history'
+        ? `${item.method} ${item.url}`
+        : `${item.name} — ${item.method || 'WS'} ${item.url || item.wsUrl || ''}`;
+      const meta = source === 'history'
+        ? `${item.status || ''} ${item.time || 0}ms`
+        : '';
+      div.innerHTML =
+        `<span class="item-main">${escapeHtml(main)}</span>` +
+        `<span class="item-meta">${escapeHtml(meta)}</span>` +
+        (source === 'collection'
+          ? `<button class="item-action" data-id="${item.id}" title="Delete">×</button>`
+          : '');
+      div.querySelector('.item-main').addEventListener('click', () => {
+        vscode.postMessage({
+          type: 'request.execute',
+          payload: { id: item.id, source }
+        });
+        // Switch to HTTP tab
+        document.querySelector('.tab[data-tab="http"]').click();
+      });
+      if (source === 'collection') {
+        div.querySelector('.item-action').addEventListener('click', (e) => {
+          e.stopPropagation();
+          vscode.postMessage({ type: 'collection.delete', payload: { id: item.id } });
+        });
+      }
+      el.appendChild(div);
+    }
+  }
+
+  // Extend window message handler
+  window.addEventListener('message', (event) => {
+    const msg = event.data;
+    if (msg.type === 'history.list') {
+      renderList('history-list', msg.payload.items, 'history');
+    } else if (msg.type === 'collection.list' || msg.type === 'collection.saved') {
+      const items = msg.type === 'collection.saved' ? [msg.payload.item] : msg.payload.items;
+      // Refresh the full list after save
+      if (msg.type === 'collection.saved') {
+        vscode.postMessage({ type: 'collection.list', payload: {} });
+      } else {
+        renderList('collections-list', items, 'collection');
+      }
+    } else if (msg.type === 'collection.deleted') {
+      vscode.postMessage({ type: 'collection.list', payload: {} });
+    }
+  });
+
+  // Initial loads
+  vscode.postMessage({ type: 'history.list', payload: {} });
+  vscode.postMessage({ type: 'collection.list', payload: {} });
 })();

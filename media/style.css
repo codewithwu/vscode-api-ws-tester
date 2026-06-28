@@ -270,3 +270,52 @@ body {
   width: 20px;
   font-weight: 600;
 }
+
+.list {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.list-item:hover {
+  background: var(--btn-hover);
+}
+
+.list-item .item-main {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item .item-meta {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  margin-left: 8px;
+}
+
+.list-item .item-action {
+  background: transparent;
+  color: var(--error);
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.empty-list {
+  padding: 12px;
+  text-align: center;
+  color: var(--vscode-descriptionForeground);
+  font-size: 12px;
+}
