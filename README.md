@@ -1,6 +1,18 @@
 # VS Code API & WebSocket Tester
 
+[![Open in Open VSX](https://img.shields.io/open-vsx/v/codewithwu-cn/vscode-api-ws-tester)](https://open-vsx.org/extension/codewithwu-cn/vscode-api-ws-tester)
+
 A VS Code extension that lets you test HTTP APIs and WebSocket connections directly from the sidebar — no need to switch to Postman or `websocat`.
+
+## Installation
+
+Install from [Open VSX Registry](https://open-vsx.org/extension/codewithwu-cn/vscode-api-ws-tester):
+
+```bash
+code --install-extension codewithwu-cn.vscode-api-ws-tester
+```
+
+Or install the [Open VSX](https://marketplace.visualstudio.com/items?itemName=open-vsx.open-vsx) extension to search this and other Open VSX-published extensions directly from VS Code.
 
 ## Features
 

@@ -2,8 +2,16 @@
   "name": "vscode-api-ws-tester",
   "displayName": "API & WebSocket Tester",
   "description": "Test HTTP APIs and WebSocket connections directly in VS Code",
-  "version": "0.1.0",
-  "publisher": "local",
+  "version": "0.1.1",
+  "publisher": "codewithwu-cn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codewithwu/vscode-api-ws-tester"
+  },
+  "bugs": {
+    "url": "https://github.com/codewithwu/vscode-api-ws-tester/issues"
+  },
+  "homepage": "https://github.com/codewithwu/vscode-api-ws-tester#readme",
   "engines": {
     "vscode": "^1.74.0",
     "node": ">=16"
@@ -11,6 +19,11 @@
   "categories": [
     "Other"
   ],
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#007ACC",
+    "theme": "dark"
+  },
   "activationEvents": [
     "onView:apiTester.view"
   ],
