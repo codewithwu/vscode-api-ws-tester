@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 import { HttpService } from '../services/HttpService';
+import { WsService } from '../services/WsService';
 import { WebviewMessage, ExtMessage } from '../types';
 
 export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'apiTester.view';
   private _view?: vscode.WebviewView;
   private _http = new HttpService();
+  private _ws = new WsService();
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
@@ -24,15 +26,53 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage((msg: WebviewMessage) => {
       this._handleMessage(msg);
     });
+
+    // WS event forwarding
+    this._ws.on('status', (s: { state: string; error?: string }) => {
+      this._post({ type: 'ws.status', payload: s as any });
+    });
+    this._ws.on('message', (m) => {
+      this._post({ type: 'ws.message', payload: m });
+    });
   }
 
   private async _handleMessage(msg: WebviewMessage): Promise<void> {
-    switch (msg.type) {
-      case 'http.send': {
-        const res = await this._http.send(msg.payload);
-        this._post({ type: 'http.response', payload: res });
-        break;
+    try {
+      switch (msg.type) {
+        case 'http.send': {
+          const res = await this._http.send(msg.payload);
+          this._post({ type: 'http.response', payload: res });
+          break;
+        }
+        case 'ws.connect': {
+          try {
+            await this._ws.connect(msg.payload.url);
+          } catch (e) {
+            this._post({
+              type: 'error',
+              payload: { message: `WS connect failed: ${(e as Error).message}` }
+            });
+          }
+          break;
+        }
+        case 'ws.disconnect': {
+          this._ws.disconnect();
+          break;
+        }
+        case 'ws.send': {
+          try {
+            await this._ws.send(msg.payload.data);
+          } catch (e) {
+            this._post({
+              type: 'error',
+              payload: { message: `WS send failed: ${(e as Error).message}` }
+            });
+          }
+          break;
+        }
       }
+    } catch (e) {
+      this._post({ type: 'error', payload: { message: (e as Error).message } });
     }
   }
 
@@ -135,7 +175,20 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
   </main>
 
   <main id="ws-panel" class="panel">
-    <p>WebSocket panel — Phase 3</p>
+    <div class="request-line">
+      <input type="text" id="ws-url" placeholder="ws://localhost:8000/ws" />
+      <button id="ws-connect" class="btn-primary">Connect</button>
+      <button id="ws-disconnect" class="btn-secondary">Disconnect</button>
+    </div>
+    <div class="ws-status">
+      <span class="status-dot" id="ws-status-dot"></span>
+      <span id="ws-status-text">Disconnected</span>
+    </div>
+    <div id="ws-messages" class="ws-messages"></div>
+    <div class="request-line">
+      <input type="text" id="ws-input" placeholder='{"type":"ping"}' />
+      <button id="ws-send" class="btn-primary">Send</button>
+    </div>
   </main>
 
   <script src="${scriptUri}"></script>
