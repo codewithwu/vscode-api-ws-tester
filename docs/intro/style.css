@@ -69,3 +69,67 @@ code, kbd { font-family: var(--font-mono); }
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ===== Hero (spec §4.1) ===== */
+.hero {
+  padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 8vw, 6rem);
+  text-align: center;
+}
+.hero .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.hero h1 {
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.hero .tagline {
+  font-size: 1.125rem;
+  color: var(--fg-muted);
+  max-width: 36rem;
+  margin: 0 auto 2rem;
+}
+.hero .tagline code {
+  background: var(--bg-elevated-2);
+  color: var(--fg);
+  padding: 0.125em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+}
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Buttons (spec §5.4) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+.btn:hover { text-decoration: none; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--fg-strong); }
