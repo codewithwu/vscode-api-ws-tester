@@ -1,7 +1,11 @@
 import * as vscode from 'vscode';
+import { HttpService } from '../services/HttpService';
+import { WebviewMessage, ExtMessage } from '../types';
 
 export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'apiTester.view';
+  private _view?: vscode.WebviewView;
+  private _http = new HttpService();
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
@@ -10,19 +14,33 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
     _context: vscode.WebviewViewResolveContext,
     _token: vscode.CancellationToken
   ): void {
+    this._view = webviewView;
     webviewView.webview.options = {
       enableScripts: true,
       localResourceRoots: [this._extensionUri]
     };
-
     webviewView.webview.html = this._getHtml(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage((msg) => {
-      console.log('Message from webview:', msg);
+    webviewView.webview.onDidReceiveMessage((msg: WebviewMessage) => {
+      this._handleMessage(msg);
     });
   }
 
-  private _getHtml(webview: vscode.Webview): string {
+  private async _handleMessage(msg: WebviewMessage): Promise<void> {
+    switch (msg.type) {
+      case 'http.send': {
+        const res = await this._http.send(msg.payload);
+        this._post({ type: 'http.response', payload: res });
+        break;
+      }
+    }
+  }
+
+  private _post(msg: ExtMessage): void {
+    this._view?.webview.postMessage(msg);
+  }
+
+  private _getHtml(_webview: vscode.Webview): string {
     return `<!DOCTYPE html>
 <html>
 <head>
