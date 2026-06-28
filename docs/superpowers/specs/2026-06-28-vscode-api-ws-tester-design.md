@@ -270,7 +270,19 @@ interface WsMessage {
 └─────────────────────────────────────────────────────┘
 ```
 
-### 6.3 主题适配
+### 6.3 Auth 子面板
+
+PRD §3.1 提到 `Headers | Body | Auth` 三个子 Tab，但未明确 Auth 行为。本设计定义 Auth 为 **便捷 Header 生成器**（不是独立的鉴权逻辑）：
+
+| Auth 类型 | 行为 |
+| :--- | :--- |
+| None | 不写入任何 Header |
+| Bearer Token | 在 Headers 表追加/更新 `Authorization: Bearer <token>` |
+| Basic Auth | 在 Headers 表追加/更新 `Authorization: Basic <base64(user:pass)>` |
+
+切换 Auth 类型或修改值后，Headers 表对应行自动同步（不会重复添加）。用户也可直接在 Headers 表里编辑，不受 Auth 表单约束。
+
+### 6.4 主题适配
 
 所有颜色使用 VS Code 主题变量：
 - 背景：`var(--vscode-editor-background)`
