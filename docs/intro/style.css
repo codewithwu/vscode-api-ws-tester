@@ -504,3 +504,17 @@ kbd {
   .terminal { flex-wrap: wrap; }
   .install-cmd { font-size: 0.8125rem; }
 }
+
+/* ===== Skip link (a11y) ===== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 1rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  z-index: 100;
+  text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
