@@ -125,7 +125,7 @@ vscode-api-ws-tester/
       {
         "command": "api-tester.sendRequest",
         "key": "ctrl+enter",
-        "when": "webviewId == 'apiTester.webview'"
+        "when": "webviewId == 'apiTester.view'"
       },
       {
         "command": "api-tester.openView",
