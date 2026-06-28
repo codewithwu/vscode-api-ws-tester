@@ -1,8 +1,15 @@
 node_modules/**
 src/**
 test/**
-.vscode-test/**
+dist/test/**
+docs/**
+.claude/**
+CLAUDE.md
+prd.md
 .eslintrc.json
 tsconfig.json
 .gitignore
+.vscode-test/**
 *.log
+*.vsix
+coverage/**
