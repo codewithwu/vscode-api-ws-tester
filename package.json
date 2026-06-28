@@ -8,7 +8,9 @@
     "vscode": "^1.74.0",
     "node": ">=16"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "activationEvents": [
     "onView:apiTester.view"
   ],
@@ -87,10 +89,12 @@
     "@types/node": "^18.19.0",
     "@types/vscode": "^1.74.0",
     "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^8.62.0",
+    "@typescript-eslint/parser": "^8.62.0",
     "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^3.9.2",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
-    "@vscode/vsce": "^3.9.2"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "ws": "^8.16.0"
