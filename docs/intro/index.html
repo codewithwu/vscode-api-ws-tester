@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API & WebSocket Tester — VS Code Extension</title>
+  <meta name="description" content="Test HTTP APIs and WebSocket connections right from the VS Code sidebar. No Postman, no websocat, no context switching.">
+  <meta name="theme-color" content="#1e1e1e">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">VS CODE EXTENSION</p>
+      <h1>API &amp; WebSocket Tester</h1>
+      <p class="tagline">Test HTTP APIs and WebSocket connections right from the sidebar &mdash; no Postman, no <code>websocat</code>, no context switching.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#install">Install</a>
+        <a class="btn btn-ghost" href="https://open-vsx.org/extension/codewithwu-cn/vscode-api-ws-tester" rel="noopener" target="_blank">View on Open VSX &rarr;</a>
+        <a class="btn btn-ghost" href="https://github.com/codewithwu/vscode-api-ws-tester" rel="noopener" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="pillars">
+    <div class="container">
+      <div class="pillar-grid">
+        <article class="pillar">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h2>HTTP, all the verbs</h2>
+          <p class="pillar-summary">GET, POST, PUT, DELETE, PATCH with full control over headers, body, and auth.</p>
+          <ul class="pillar-bullets">
+            <li>5 methods</li>
+            <li>Headers</li>
+            <li>JSON / Text / Form body</li>
+            <li>Bearer &amp; Basic auth</li>
+          </ul>
+        </article>
+
+        <article class="pillar">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h6l2-3 4 6 2-3h6"/>
+              <path d="M5 4h2"/>
+              <path d="M17 20h2"/>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <h2>Real-time, in the editor</h2>
+          <p class="pillar-summary">Connect to <code>ws://</code> and <code>wss://</code>, send and receive messages with live timestamps.</p>
+          <ul class="pillar-bullets">
+            <li>Connect / disconnect</li>
+            <li>Send &amp; receive</li>
+            <li>Timestamped log</li>
+            <li>Status indicator</li>
+          </ul>
+        </article>
+
+        <article class="pillar">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h2>Built for the flow</h2>
+          <p class="pillar-summary">Stays out of your way: history, collections, theme-aware UI, keyboard shortcuts.</p>
+          <ul class="pillar-bullets">
+            <li>50-item history</li>
+            <li>Saved collections</li>
+            <li>Dark / light theme</li>
+            <li>Shortcuts</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mockup-section">
+    <div class="container">
+      <h2 class="section-title">See it in action</h2>
+      <div class="mockup-window" role="region" aria-label="API Tester interface preview">
+        <div class="mockup-chrome">
+          <span class="mockup-dot" aria-hidden="true"></span>
+          <span class="mockup-dot" aria-hidden="true"></span>
+          <span class="mockup-dot" aria-hidden="true"></span>
+          <div class="mockup-tabs" role="tablist" aria-label="Protocol">
+            <button role="tab" id="tab-http" aria-selected="true" aria-controls="panel-http" data-tab="http">HTTP</button>
+            <button role="tab" id="tab-ws" aria-selected="false" aria-controls="panel-ws" data-tab="ws" tabindex="-1">WebSocket</button>
+          </div>
+        </div>
+
+        <div class="mockup-body">
+          <!-- HTTP panel -->
+          <div role="tabpanel" id="panel-http" aria-labelledby="tab-http" class="mockup-panel panel-http" data-panel="http">
+            <div class="request-line">
+              <span class="method">POST</span>
+              <input class="url" type="text" value="https://api.example.com/users" readonly aria-label="Request URL">
+              <button class="mockup-btn primary" type="button">Send</button>
+            </div>
+            <div class="subtabs">
+              <button class="subtab active" type="button">Headers</button>
+              <button class="subtab" type="button">Body</button>
+              <button class="subtab" type="button">Auth</button>
+            </div>
+            <div class="kv-list">
+              <div class="kv-row"><span class="kv-key">Content-Type</span><span class="kv-val">application/json</span></div>
+              <div class="kv-row"><span class="kv-key">Authorization</span><span class="kv-val">Bearer &middot;&middot;&middot;</span></div>
+            </div>
+            <div class="response">
+              <div class="response-meta">
+                <span class="status status-ok">200 OK</span>
+                <span class="meta-sep">&middot;</span>
+                <span class="meta-time">156ms</span>
+                <span class="meta-sep">&middot;</span>
+                <span class="meta-size">2.3KB</span>
+              </div>
+              <pre class="response-body"><code><span class="j-key">"id"</span>: <span class="j-num">42</span>,
+<span class="j-key">"name"</span>: <span class="j-str">"Ada"</span>,
+<span class="j-key">"created"</span>: <span class="j-str">"2026-06-28"</span>,</code></pre>
+            </div>
+          </div>
+
+          <!-- WebSocket panel -->
+          <div role="tabpanel" id="panel-ws" aria-labelledby="tab-ws" class="mockup-panel panel-ws" data-panel="ws" hidden>
+            <div class="request-line">
+              <input class="url" type="text" value="wss://echo.websocket.org" readonly aria-label="WebSocket URL">
+              <button class="mockup-btn" type="button">Disconnect</button>
+            </div>
+            <div class="ws-status">
+              <span class="status-dot status-dot-connected" aria-hidden="true"></span>
+              <span>Connected</span>
+            </div>
+            <div class="ws-log">
+              <div class="ws-msg ws-sent"><span class="ws-arrow">&rarr;</span><span class="ws-time">10:00:01</span><span class="ws-text">Hello Server</span></div>
+              <div class="ws-msg ws-received"><span class="ws-arrow">&larr;</span><span class="ws-time">10:00:02</span><span class="ws-text">Server received</span></div>
+              <div class="ws-msg ws-sent"><span class="ws-arrow">&rarr;</span><span class="ws-time">10:00:05</span><span class="ws-text">{"type":"ping"}</span></div>
+              <div class="ws-msg ws-received"><span class="ws-arrow">&larr;</span><span class="ws-time">10:00:05</span><span class="ws-text">{"type":"pong"}</span></div>
+            </div>
+            <div class="ws-input-row">
+              <input class="url" type="text" value="Type a message&hellip;" readonly aria-label="Message">
+              <button class="mockup-btn primary" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shortcuts">
+    <div class="container">
+      <h2 class="section-title">Keyboard shortcuts</h2>
+      <div class="shortcut-grid">
+        <div class="shortcut">
+          <div class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd></div>
+          <p>Open the tester panel</p>
+        </div>
+        <div class="shortcut">
+          <div class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></div>
+          <p>Send request / message</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="container">
+      <h2 class="section-title">Install in one command</h2>
+      <div class="install-block">
+        <div class="terminal">
+          <span class="terminal-prompt" aria-hidden="true">$</span>
+          <code class="install-cmd">code --install-extension codewithwu-cn.vscode-api-ws-tester</code>
+          <button class="copy-btn" type="button" data-copy="code --install-extension codewithwu-cn.vscode-api-ws-tester" aria-label="Copy install command">Copy</button>
+        </div>
+        <p class="install-alt">or <a href="https://github.com/codewithwu/vscode-api-ws-tester/releases/latest" rel="noopener" target="_blank">download the .vsix</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/codewithwu/vscode-api-ws-tester" rel="noopener" target="_blank">GitHub repo</a></li>
+          <li><a href="https://github.com/codewithwu/vscode-api-ws-tester/issues" rel="noopener" target="_blank">Issues</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://open-vsx.org/extension/codewithwu-cn/vscode-api-ws-tester" rel="noopener" target="_blank">Open VSX</a></li>
+          <li><a href="https://github.com/codewithwu/vscode-api-ws-tester/blob/main/prd.md" rel="noopener" target="_blank">PRD</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Meta</h3>
+        <p>v0.1.1 &middot; MIT &middot; by <a href="https://github.com/codewithwu" rel="noopener" target="_blank">codewithwu</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
