@@ -108,6 +108,27 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
           this._post({ type: 'collection.saved', payload: { item: saved } });
           break;
         }
+        case 'collection.save.prompt': {
+          const name = await vscode.window.showInputBox({
+            prompt: 'Name for this saved request',
+            placeHolder: 'e.g. Get user profile',
+            validateInput: (v) => (v.trim() ? null : 'Name is required')
+          });
+          if (name) {
+            const saved = await this._collection.save({ ...msg.payload.spec, name });
+            this._post({
+              type: 'collection.save.prompt.result',
+              payload: { name, spec: { ...msg.payload.spec, name } }
+            });
+            this._post({ type: 'collection.saved', payload: { item: saved } });
+          } else {
+            this._post({
+              type: 'collection.save.prompt.result',
+              payload: { name: null, spec: null }
+            });
+          }
+          break;
+        }
         case 'collection.delete': {
           await this._collection.delete(msg.payload.id);
           this._post({ type: 'collection.deleted', payload: { id: msg.payload.id } });
@@ -119,7 +140,20 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
             msg.payload.source === 'history'
               ? this._history.list().find((h) => h.id === msg.payload.id)
               : this._collection.get(msg.payload.id);
-          if (stored && stored.url) {
+          if (!stored) break;
+          // History items only have HTTP fields; only CollectionItem may have wsUrl.
+          const isWsOnly =
+            'wsUrl' in stored && !!stored.wsUrl && !stored.url;
+          if (isWsOnly && stored.wsUrl) {
+            try {
+              await this._ws.connect(stored.wsUrl);
+            } catch (e) {
+              this._post({
+                type: 'error',
+                payload: { message: `WS connect failed: ${(e as Error).message}` }
+              });
+            }
+          } else if (stored.url) {
             const res = await this._http.send({
               method: stored.method ?? 'GET',
               url: stored.url,

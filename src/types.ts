@@ -68,6 +68,7 @@ export type ExtMessage =
   | { type: 'collection.list'; payload: { items: CollectionItem[] } }
   | { type: 'collection.saved'; payload: { item: CollectionItem } }
   | { type: 'collection.deleted'; payload: { id: string } }
+  | { type: 'collection.save.prompt.result'; payload: { name: string | null; spec: Omit<CollectionItem, 'id' | 'ts'> | null } }
   | { type: 'error'; payload: { message: string } };
 
 export type WebviewMessage =
@@ -79,5 +80,6 @@ export type WebviewMessage =
   | { type: 'history.save'; payload: { item: HistoryItem } }
   | { type: 'collection.list'; payload: Record<string, never> }
   | { type: 'collection.save'; payload: { item: Omit<CollectionItem, 'id' | 'ts'> } }
+  | { type: 'collection.save.prompt'; payload: { spec: Omit<CollectionItem, 'id' | 'ts' | 'name'> } }
   | { type: 'collection.delete'; payload: { id: string } }
   | { type: 'request.execute'; payload: { id: string; source: 'history' | 'collection' } };

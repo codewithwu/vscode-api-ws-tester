@@ -20,6 +20,26 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.executeCommand('editor.action.clipboardCopyAction');
     })
   );
+
+  // These commands are referenced by package.json keybindings/contributes.
+  // The actual send/connect/disconnect logic is driven by webview postMessage
+  // (handled in ApiTesterViewProvider). These registrations satisfy VS Code's
+  // command validation so the keybindings and menus resolve.
+  context.subscriptions.push(
+    vscode.commands.registerCommand('api-tester.sendRequest', () => {
+      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand('api-tester.connectWs', () => {
+      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand('api-tester.disconnectWs', () => {
+      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+    })
+  );
 }
 
 export function deactivate() {}

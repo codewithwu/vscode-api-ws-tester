@@ -285,15 +285,13 @@
       showError('URL is required');
       return;
     }
-    const name = prompt('Save as (name):');
-    if (!name) return;
     const method = document.getElementById('http-method').value;
     const bodyType = document.querySelector('input[name="body-type"]:checked').value;
     const body = bodyType === 'none' ? undefined : document.getElementById('body-input').value;
     vscode.postMessage({
-      type: 'collection.save',
+      type: 'collection.save.prompt',
       payload: {
-        item: { name, method, url, headers: collectHeaders(), body, bodyType }
+        spec: { method, url, headers: collectHeaders(), body, bodyType }
       }
     });
   });
@@ -337,8 +335,9 @@
           type: 'request.execute',
           payload: { id: item.id, source }
         });
-        // Switch to HTTP tab
-        document.querySelector('.tab[data-tab="http"]').click();
+        // Switch to the appropriate tab based on item type
+        const targetTab = item.wsUrl && !item.url ? 'ws' : 'http';
+        document.querySelector('.tab[data-tab="' + targetTab + '"]').click();
       });
       if (source === 'collection') {
         div.querySelector('.item-action').addEventListener('click', (e) => {
