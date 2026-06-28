@@ -11,7 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('api-tester.openView', () => {
-      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+      vscode.commands.executeCommand('workbench.view.extension.apiTester-container');
     })
   );
 
@@ -27,17 +27,17 @@ export function activate(context: vscode.ExtensionContext) {
   // command validation so the keybindings and menus resolve.
   context.subscriptions.push(
     vscode.commands.registerCommand('api-tester.sendRequest', () => {
-      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+      vscode.commands.executeCommand('workbench.view.extension.apiTester-container');
     })
   );
   context.subscriptions.push(
     vscode.commands.registerCommand('api-tester.connectWs', () => {
-      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+      vscode.commands.executeCommand('workbench.view.extension.apiTester-container');
     })
   );
   context.subscriptions.push(
     vscode.commands.registerCommand('api-tester.disconnectWs', () => {
-      vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
+      vscode.commands.executeCommand('workbench.view.extension.apiTester-container');
     })
   );
 }

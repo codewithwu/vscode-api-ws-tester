@@ -19,14 +19,14 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "apiTester.container",
+          "id": "apiTester-container",
           "title": "API Tester",
           "icon": "media/icon.svg"
         }
       ]
     },
     "views": {
-      "apiTester.container": [
+      "apiTester-container": [
         {
           "type": "webview",
           "id": "apiTester.view",
