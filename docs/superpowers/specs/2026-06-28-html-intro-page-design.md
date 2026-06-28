@@ -155,7 +155,7 @@ docs/superpowers/specs/
   2026-06-28-html-intro-page-design.md   ← this file
 ```
 
-The `docs/intro/` path makes GitHub Pages deployment trivial: enable Pages on `main` / `docs/intro` later.
+The `docs//` path makes GitHub Pages deployment trivial: enable Pages on `main` / `docs/` later.
 
 ## 7. Out of Scope (Explicit)
 

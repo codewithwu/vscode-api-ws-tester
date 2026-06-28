@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Ship `docs/intro/index.html` (+ `style.css`, `app.js`, `favicon.svg`) — a single dark-themed static page that introduces the `vscode-api-ws-tester` extension and drives installs.
+**Goal:** Ship `docs//index.html` (+ `style.css`, `app.js`, `favicon.svg`) — a single dark-themed static page that introduces the `vscode-api-ws-tester` extension and drives installs.
 
-**Architecture:** Pure static HTML/CSS/vanilla JS. No build step, no framework, no CDN. All visual elements (including the "screenshot" of the webview) are drawn with HTML+CSS. The mockup section contains both the HTTP and WebSocket panels in the DOM, swapped via a small JS tab toggle. Ready for GitHub Pages deployment from `docs/intro/`.
+**Architecture:** Pure static HTML/CSS/vanilla JS. No build step, no framework, no CDN. All visual elements (including the "screenshot" of the webview) are drawn with HTML+CSS. The mockup section contains both the HTTP and WebSocket panels in the DOM, swapped via a small JS tab toggle. Ready for GitHub Pages deployment from `docs//`.
 
 **Tech Stack:** HTML5, CSS3 (custom properties, grid, flexbox, container queries where useful), vanilla JavaScript. No npm dependencies.
 
@@ -18,12 +18,12 @@
 
 | Path | Responsibility |
 | :--- | :--- |
-| `docs/intro/index.html` | Page markup: 6 semantic sections, all copy from spec §4, ARIA tabs in mockup |
-| `docs/intro/style.css` | All styles: design tokens, typography, layout, components, mockup, responsive |
-| `docs/intro/app.js` | Tab toggle inside mockup, copy-to-clipboard on install command |
-| `docs/intro/favicon.svg` | Browser tab icon (simplified derivative of `media/icon.svg`) |
+| `docs//index.html` | Page markup: 6 semantic sections, all copy from spec §4, ARIA tabs in mockup |
+| `docs//style.css` | All styles: design tokens, typography, layout, components, mockup, responsive |
+| `docs//app.js` | Tab toggle inside mockup, copy-to-clipboard on install command |
+| `docs//favicon.svg` | Browser tab icon (simplified derivative of `media/icon.svg`) |
 
-No build step. No package.json inside `docs/intro/`. Open `index.html` directly in a browser to preview.
+No build step. No package.json inside `docs//`. Open `index.html` directly in a browser to preview.
 
 ---
 
@@ -41,17 +41,17 @@ Because the deliverable is static markup, "tests" are validation scripts rather 
 ## Task 1: Bootstrap directory and favicon
 
 **Files:**
-- Create: `docs/intro/favicon.svg`
+- Create: `docs//favicon.svg`
 
 - [ ] **Step 1: Create the directory**
 
 ```bash
-mkdir -p /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro
+mkdir -p /home/cooper/githubProjects/vscode-api-ws-tester/docs/
 ```
 
 - [ ] **Step 2: Write a 24×24 simplified favicon**
 
-The plugin's existing icon (`media/icon.svg`) is a 24×24 SVG with a circle and crosshairs. The favicon is a cleaner derivative optimized for small sizes (no thin strokes that disappear at 16×16). Create `docs/intro/favicon.svg`:
+The plugin's existing icon (`media/icon.svg`) is a 24×24 SVG with a circle and crosshairs. The favicon is a cleaner derivative optimized for small sizes (no thin strokes that disappear at 16×16). Create `docs//favicon.svg`:
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#007ACC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -64,7 +64,7 @@ The plugin's existing icon (`media/icon.svg`) is a 24×24 SVG with a circle and 
 - [ ] **Step 3: Verify the file**
 
 ```bash
-ls -la /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/favicon.svg
+ls -la /home/cooper/githubProjects/vscode-api-ws-tester/docs//favicon.svg
 ```
 
 Expected: file exists, ~250 bytes.
@@ -73,7 +73,7 @@ Expected: file exists, ~250 bytes.
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/favicon.svg
+git add docs//favicon.svg
 git commit -m "feat(intro): add favicon for landing page"
 ```
 
@@ -82,7 +82,7 @@ git commit -m "feat(intro): add favicon for landing page"
 ## Task 2: HTML skeleton
 
 **Files:**
-- Create: `docs/intro/index.html`
+- Create: `docs//index.html`
 
 - [ ] **Step 1: Write the full HTML skeleton**
 
@@ -309,7 +309,7 @@ python3 - <<'PY'
 from html.parser import HTMLParser
 class V(HTMLParser):
     def error(self, msg): raise SystemExit(f"Parse error: {msg}")
-V().feed(open('/home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/index.html').read())
+V().feed(open('/home/cooper/githubProjects/vscode-api-ws-tester/docs//index.html').read())
 print("OK")
 PY
 ```
@@ -319,9 +319,9 @@ Expected: prints `OK`.
 - [ ] **Step 3: Verify required elements are present**
 
 ```bash
-grep -c '<section' /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/index.html
-grep -c 'role="tab"' /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/index.html
-grep -q '<title>API & WebSocket Tester' /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/index.html && echo "title OK"
+grep -c '<section' /home/cooper/githubProjects/vscode-api-ws-tester/docs//index.html
+grep -c 'role="tab"' /home/cooper/githubProjects/vscode-api-ws-tester/docs//index.html
+grep -q '<title>API & WebSocket Tester' /home/cooper/githubProjects/vscode-api-ws-tester/docs//index.html && echo "title OK"
 ```
 
 Expected: `6`, `2`, `title OK`.
@@ -330,7 +330,7 @@ Expected: `6`, `2`, `title OK`.
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/index.html
+git add docs//index.html
 git commit -m "feat(intro): add HTML skeleton with all 6 sections"
 ```
 
@@ -339,7 +339,7 @@ git commit -m "feat(intro): add HTML skeleton with all 6 sections"
 ## Task 3: CSS foundation (tokens, reset, typography, layout)
 
 **Files:**
-- Create: `docs/intro/style.css`
+- Create: `docs//style.css`
 
 - [ ] **Step 1: Write the foundation styles**
 
@@ -421,10 +421,10 @@ code, kbd { font-family: var(--font-mono); }
 
 - [ ] **Step 2: Verify the file loads**
 
-Open `docs/intro/index.html` in a browser (or run a quick smoke check):
+Open `docs//index.html` in a browser (or run a quick smoke check):
 
 ```bash
-wc -c /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/style.css
+wc -c /home/cooper/githubProjects/vscode-api-ws-tester/docs//style.css
 ```
 
 Expected: ~2 KB, browser shows dark background with default white-ish text.
@@ -433,7 +433,7 @@ Expected: ~2 KB, browser shows dark background with default white-ish text.
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): add CSS foundation (tokens, reset, layout)"
 ```
 
@@ -442,7 +442,7 @@ git commit -m "feat(intro): add CSS foundation (tokens, reset, layout)"
 ## Task 4: Style the Hero section
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append hero styles**
 
@@ -514,7 +514,7 @@ git commit -m "feat(intro): add CSS foundation (tokens, reset, layout)"
 
 - [ ] **Step 2: Visual check**
 
-Open `docs/intro/index.html` in a browser. Hero should show:
+Open `docs//index.html` in a browser. Hero should show:
 - Blue uppercase eyebrow text
 - Large white title
 - Muted gray tagline with monospace `websocat`
@@ -526,7 +526,7 @@ If any visual mismatch, adjust colors/spacing in this section's CSS.
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style hero section"
 ```
 
@@ -535,7 +535,7 @@ git commit -m "feat(intro): style hero section"
 ## Task 5: Style the Three Pillars section
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append pillar styles**
 
@@ -606,7 +606,7 @@ If grid is wrong, verify `repeat(3, 1fr)` and that the parent has no conflicting
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style three pillars grid"
 ```
 
@@ -615,7 +615,7 @@ git commit -m "feat(intro): style three pillars grid"
 ## Task 6: Style the Mockup frame + tab strip
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append mockup frame styles**
 
@@ -681,7 +681,7 @@ Open in browser. You should see a dark "window" with three gray dots, and two ta
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style mockup frame and tab strip"
 ```
 
@@ -690,7 +690,7 @@ git commit -m "feat(intro): style mockup frame and tab strip"
 ## Task 7: Style the HTTP mockup body
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append HTTP panel styles**
 
@@ -803,7 +803,7 @@ HTTP panel should show:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style HTTP mockup body"
 ```
 
@@ -812,7 +812,7 @@ git commit -m "feat(intro): style HTTP mockup body"
 ## Task 8: Style the WebSocket mockup body
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append WebSocket panel styles**
 
@@ -883,7 +883,7 @@ WebSocket panel should show:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style WebSocket mockup body"
 ```
 
@@ -892,7 +892,7 @@ git commit -m "feat(intro): style WebSocket mockup body"
 ## Task 9: Style Shortcuts, Install, and Footer sections
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append remaining section styles**
 
@@ -1013,7 +1013,7 @@ Three remaining sections render correctly: shortcut chips side-by-side, dark ter
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): style shortcuts, install, and footer"
 ```
 
@@ -1022,7 +1022,7 @@ git commit -m "feat(intro): style shortcuts, install, and footer"
 ## Task 10: JavaScript (tab toggle + copy to clipboard)
 
 **Files:**
-- Create: `docs/intro/app.js`
+- Create: `docs//app.js`
 
 - [ ] **Step 1: Write app.js with tab toggle and copy logic**
 
@@ -1091,7 +1091,7 @@ git commit -m "feat(intro): style shortcuts, install, and footer"
 - [ ] **Step 2: Verify syntax**
 
 ```bash
-node --check /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/app.js && echo OK
+node --check /home/cooper/githubProjects/vscode-api-ws-tester/docs//app.js && echo OK
 ```
 
 Expected: prints `OK`.
@@ -1106,7 +1106,7 @@ Open in browser:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/app.js
+git add docs//app.js
 git commit -m "feat(intro): add tab toggle and copy-to-clipboard"
 ```
 
@@ -1115,7 +1115,7 @@ git commit -m "feat(intro): add tab toggle and copy-to-clipboard"
 ## Task 11: Responsive breakpoints
 
 **Files:**
-- Modify: `docs/intro/style.css` (append)
+- Modify: `docs//style.css` (append)
 
 - [ ] **Step 1: Append media queries**
 
@@ -1146,7 +1146,7 @@ Resize the browser (or use DevTools responsive mode) and verify:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/style.css
+git add docs//style.css
 git commit -m "feat(intro): add responsive breakpoints"
 ```
 
@@ -1155,7 +1155,7 @@ git commit -m "feat(intro): add responsive breakpoints"
 ## Task 12: Accessibility & SEO polish
 
 **Files:**
-- Modify: `docs/intro/index.html`
+- Modify: `docs//index.html`
 
 - [ ] **Step 1: Add Open Graph and Twitter meta tags**
 
@@ -1181,7 +1181,7 @@ Insert immediately after `<body>`:
 
 - [ ] **Step 3: Add skip-link and visibility-only utility styles**
 
-Append to `docs/intro/style.css`:
+Append to `docs//style.css`:
 
 ```css
 /* ===== Skip link (a11y) ===== */
@@ -1203,11 +1203,11 @@ Append to `docs/intro/style.css`:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-grep -q 'lang="en"' docs/intro/index.html && echo "lang OK"
-grep -q 'aria-hidden="true"' docs/intro/index.html && echo "aria-hidden OK"
-grep -q 'role="tab"' docs/intro/index.html && echo "tabs OK"
-grep -q ':focus-visible' docs/intro/style.css && echo "focus-visible OK"
-grep -q 'prefers-reduced-motion' docs/intro/style.css && echo "reduced-motion OK"
+grep -q 'lang="en"' docs//index.html && echo "lang OK"
+grep -q 'aria-hidden="true"' docs//index.html && echo "aria-hidden OK"
+grep -q 'role="tab"' docs//index.html && echo "tabs OK"
+grep -q ':focus-visible' docs//style.css && echo "focus-visible OK"
+grep -q 'prefers-reduced-motion' docs//style.css && echo "reduced-motion OK"
 ```
 
 Expected: all five `OK`.
@@ -1216,7 +1216,7 @@ Expected: all five `OK`.
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/index.html docs/intro/style.css
+git add docs//index.html docs//style.css
 git commit -m "feat(intro): add OG meta, skip link, a11y polish"
 ```
 
@@ -1225,12 +1225,12 @@ git commit -m "feat(intro): add OG meta, skip link, a11y polish"
 ## Task 13: Final verification and weight check
 
 **Files:**
-- Modify: `.gitignore` (only if needed for `docs/intro/` build artifacts — likely no change)
+- Modify: `.gitignore` (only if needed for `docs//` build artifacts — likely no change)
 
 - [ ] **Step 1: Page weight check**
 
 ```bash
-cd /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro
+cd /home/cooper/githubProjects/vscode-api-ws-tester/docs/
 wc -c index.html style.css app.js favicon.svg
 ```
 
@@ -1239,7 +1239,7 @@ Expected: total < 50 KB uncompressed (spec §8.3). If over, audit the largest fi
 - [ ] **Step 2: Gzipped size check (proxy for transfer size)**
 
 ```bash
-cd /home/cooper/githubProjects/vscode-api-ws-tester/docs/intro
+cd /home/cooper/githubProjects/vscode-api-ws-tester/docs/
 gzip -c index.html | wc -c
 gzip -c style.css | wc -c
 gzip -c app.js | wc -c
@@ -1254,7 +1254,7 @@ python3 - <<'PY'
 from html.parser import HTMLParser
 class V(HTMLParser):
     def error(self, msg): raise SystemExit(f"Parse error: {msg}")
-V().feed(open('/home/cooper/githubProjects/vscode-api-ws-tester/docs/intro/index.html').read())
+V().feed(open('/home/cooper/githubProjects/vscode-api-ws-tester/docs//index.html').read())
 print("OK")
 PY
 ```
@@ -1279,7 +1279,7 @@ If adjustments were needed:
 
 ```bash
 cd /home/cooper/githubProjects/vscode-api-ws-tester
-git add docs/intro/
+git add docs//
 git commit -m "polish(intro): final visual adjustments"
 ```
 
@@ -1289,4 +1289,4 @@ If no adjustments, skip this step.
 
 ## Done
 
-`docs/intro/` now contains a self-contained, dependency-free static page that meets the spec. To deploy later: enable GitHub Pages on `main` / `docs/intro` (or move the contents to a `gh-pages` branch — out of scope for this plan).
+`docs//` now contains a self-contained, dependency-free static page that meets the spec. To deploy later: enable GitHub Pages on `main` / `docs/` (or move the contents to a `gh-pages` branch — out of scope for this plan).
