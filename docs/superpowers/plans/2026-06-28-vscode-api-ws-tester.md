@@ -79,7 +79,7 @@ vscode-api-ws-tester/
   "activationEvents": [
     "onView:apiTester.view"
   ],
-  "main": "./dist/extension.js",
+  "main": "./dist/src/extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -145,7 +145,7 @@ vscode-api-ws-tester/
   "scripts": {
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "test": "node ./out/test/runTest.js",
+    "test": "node ./dist/test/runTest.js",
     "lint": "eslint src --ext ts",
     "package": "vsce package"
   },
