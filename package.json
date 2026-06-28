@@ -1,0 +1,98 @@
+{
+  "name": "vscode-api-ws-tester",
+  "displayName": "API & WebSocket Tester",
+  "description": "Test HTTP APIs and WebSocket connections directly in VS Code",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.74.0",
+    "node": ">=16"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onView:apiTester.view"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "apiTester.container",
+          "title": "API Tester",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "apiTester.container": [
+        {
+          "type": "webview",
+          "id": "apiTester.view",
+          "name": "API & WebSocket Tester"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "api-tester.openView",
+        "title": "Open API & WebSocket Tester",
+        "category": "API Tester"
+      },
+      {
+        "command": "api-tester.sendRequest",
+        "title": "Send Request",
+        "category": "API Tester"
+      },
+      {
+        "command": "api-tester.connectWs",
+        "title": "Connect WebSocket",
+        "category": "API Tester"
+      },
+      {
+        "command": "api-tester.disconnectWs",
+        "title": "Disconnect WebSocket",
+        "category": "API Tester"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "api-tester.sendRequest",
+        "key": "ctrl+enter",
+        "when": "webviewId == 'apiTester.webview'"
+      },
+      {
+        "command": "api-tester.openView",
+        "key": "ctrl+shift+w"
+      }
+    ],
+    "menus": {
+      "editor/context/contextCopy": [],
+      "webview/context": [
+        {
+          "command": "api-tester.copy",
+          "group": "1_copy"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "node ./out/test/runTest.js",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.74.0",
+    "@types/ws": "^8.5.10",
+    "@vscode/test-electron": "^2.3.8",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/vsce": "^3.9.2"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
