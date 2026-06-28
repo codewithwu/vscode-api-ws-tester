@@ -100,14 +100,14 @@
           <span class="mockup-dot" aria-hidden="true"></span>
           <span class="mockup-dot" aria-hidden="true"></span>
           <div class="mockup-tabs" role="tablist" aria-label="Protocol">
-            <button role="tab" id="tab-http" aria-selected="true" aria-controls="panel-http" data-tab="http">HTTP</button>
-            <button role="tab" id="tab-ws" aria-selected="false" aria-controls="panel-ws" data-tab="ws" tabindex="-1">WebSocket</button>
+            <button role="tab" id="tab-http" aria-selected="true" aria-controls="panel-http">HTTP</button>
+            <button role="tab" id="tab-ws" aria-selected="false" aria-controls="panel-ws" tabindex="-1">WebSocket</button>
           </div>
         </div>
 
         <div class="mockup-body">
           <!-- HTTP panel -->
-          <div role="tabpanel" id="panel-http" aria-labelledby="tab-http" class="mockup-panel panel-http" data-panel="http">
+          <div role="tabpanel" id="panel-http" aria-labelledby="tab-http" class="mockup-panel">
             <div class="request-line">
               <span class="method">POST</span>
               <input class="url" type="text" value="https://api.example.com/users" readonly aria-label="Request URL">
@@ -137,7 +137,7 @@
           </div>
 
           <!-- WebSocket panel -->
-          <div role="tabpanel" id="panel-ws" aria-labelledby="tab-ws" class="mockup-panel panel-ws" data-panel="ws" hidden>
+          <div role="tabpanel" id="panel-ws" aria-labelledby="tab-ws" class="mockup-panel" hidden>
             <div class="request-line">
               <input class="url" type="text" value="wss://echo.websocket.org" readonly aria-label="WebSocket URL">
               <button class="mockup-btn" type="button">Disconnect</button>

@@ -55,7 +55,7 @@ Cards, each with a 24×24 inline SVG icon, heading, one-line summary, and 3-bull
 A single centered "window" frame styled like a VS Code sidebar panel (~520px wide, dark chrome `#252526`).
 
 - Top: window chrome bar with traffic-light dots and tab strip `[HTTP] [WebSocket]`.
-- A JS tab toggle (`data-tab` attribute) swaps between two stacked mockup bodies — only one is visible at a time, both are present in the DOM for SEO/print.
+- A JS tab toggle uses each tab's `aria-controls` attribute to look up the corresponding panel and swaps between two stacked mockup bodies — only one is visible at a time, both are present in the DOM for SEO/print.
 - **HTTP mockup body**: method dropdown (`POST`), URL input (`https://api.example.com/users`), `Send` button, Headers sub-tab with two key/value rows, Body sub-tab with a 6-line JSON snippet, Response panel showing `200 OK · 156ms · 2.3KB` and a 4-line JSON body.
 - **WebSocket mockup body**: URL input (`wss://echo.websocket.org`), Connect / Disconnect buttons, status dot (`● Connected` in green), four message log rows alternating `→` (sent, blue-tinted) and `←` (received, green-tinted), each with a timestamp and short payload, plus a bottom input + Send.
 

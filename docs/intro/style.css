@@ -124,7 +124,7 @@ code, kbd { font-family: var(--font-mono); }
 .btn:hover { text-decoration: none; }
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--fg-strong);
 }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-ghost {
@@ -246,7 +246,7 @@ code, kbd { font-family: var(--font-mono); }
 }
 .method {
   background: var(--accent);
-  color: #fff;
+  color: var(--fg-strong);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 700;
@@ -276,7 +276,7 @@ code, kbd { font-family: var(--font-mono); }
 }
 .mockup-btn.primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--fg-strong);
   border-color: var(--accent);
 }
 .subtabs {
@@ -511,7 +511,7 @@ kbd {
   top: -40px;
   left: 1rem;
   background: var(--accent);
-  color: #fff;
+  color: var(--fg-strong);
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-sm);
   z-index: 100;
