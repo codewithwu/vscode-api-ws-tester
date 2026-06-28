@@ -133,3 +133,55 @@ code, kbd { font-family: var(--font-mono); }
   border-color: var(--border);
 }
 .btn-ghost:hover { border-color: var(--accent); color: var(--fg-strong); }
+
+/* ===== Pillars (spec §4.2) ===== */
+.pillars {
+  padding: clamp(3rem, 8vw, 6rem) 0;
+}
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.pillar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+.pillar:hover {
+  transform: translateY(-2px);
+  border-color: #4d4d4d;
+}
+.pillar-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-elevated-2);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.pillar-icon svg { width: 24px; height: 24px; }
+.pillar h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.pillar-summary {
+  color: var(--fg-muted);
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+.pillar-bullets {
+  list-style: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--fg);
+}
+.pillar-bullets li {
+  padding: 0.25rem 0;
+  border-top: 1px solid var(--border);
+}
+.pillar-bullets li:first-child { border-top: none; }
