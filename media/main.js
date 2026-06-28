@@ -154,4 +154,86 @@
   function escapeAttr(s) {
     return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;');
   }
+
+  // --- WebSocket ---
+  const wsConnectBtn = document.getElementById('ws-connect');
+  const wsDisconnectBtn = document.getElementById('ws-disconnect');
+  const wsSendBtn = document.getElementById('ws-send');
+  const wsUrlInput = document.getElementById('ws-url');
+  const wsInput = document.getElementById('ws-input');
+  const wsMessagesEl = document.getElementById('ws-messages');
+  const wsStatusDot = document.getElementById('ws-status-dot');
+  const wsStatusText = document.getElementById('ws-status-text');
+
+  wsConnectBtn.addEventListener('click', () => {
+    const url = wsUrlInput.value.trim();
+    if (!url) {
+      showWsError('URL is required');
+      return;
+    }
+    vscode.postMessage({ type: 'ws.connect', payload: { url } });
+  });
+
+  wsDisconnectBtn.addEventListener('click', () => {
+    vscode.postMessage({ type: 'ws.disconnect', payload: {} });
+  });
+
+  wsSendBtn.addEventListener('click', sendWs);
+  wsInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendWs();
+    }
+  });
+
+  function sendWs() {
+    const data = wsInput.value;
+    if (!data) return;
+    vscode.postMessage({ type: 'ws.send', payload: { data } });
+    wsInput.value = '';
+  }
+
+  function appendWsMessage(msg) {
+    const div = document.createElement('div');
+    div.className = 'ws-msg ' + msg.dir;
+    const ts = new Date(msg.ts).toLocaleTimeString();
+    div.innerHTML =
+      `<span class="ws-dir">${msg.dir === 'send' ? '→' : '←'}</span>` +
+      `<span class="ws-ts">${escapeHtml(ts)}</span>` +
+      `<span class="ws-data">${escapeHtml(msg.data)}</span>`;
+    wsMessagesEl.appendChild(div);
+    wsMessagesEl.scrollTop = wsMessagesEl.scrollHeight;
+  }
+
+  function setWsStatus(state, error) {
+    wsStatusDot.className = 'status-dot ' + state;
+    wsStatusText.textContent =
+      state === 'connected' ? 'Connected' :
+      state === 'connecting' ? 'Connecting...' :
+      state === 'error' ? ('Error: ' + (error || '')) :
+      'Disconnected';
+  }
+
+  function showWsError(msg) {
+    setWsStatus('error', msg);
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // Hook into message router (extend existing window listener)
+  const origHandler = window.onmessage;
+  // The handler is registered via addEventListener; instead we patch the message event below.
+  window.addEventListener('message', (event) => {
+    const msg = event.data;
+    if (msg.type === 'ws.status') {
+      setWsStatus(msg.payload.state, msg.payload.error);
+    } else if (msg.type === 'ws.message') {
+      appendWsMessage(msg.payload);
+    }
+  });
 })();

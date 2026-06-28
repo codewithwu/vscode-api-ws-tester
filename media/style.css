@@ -217,3 +217,56 @@ body {
   color: var(--vscode-descriptionForeground);
   margin-top: 4px;
 }
+
+.ws-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+  font-size: 12px;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--vscode-descriptionForeground);
+}
+
+.status-dot.connected { background: var(--success); }
+.status-dot.connecting { background: var(--warn); }
+.status-dot.error { background: var(--error); }
+
+.ws-messages {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  padding: 4px;
+  height: 250px;
+  overflow-y: auto;
+  font-family: var(--code-font);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.ws-msg {
+  padding: 2px 4px;
+  border-bottom: 1px dotted var(--border);
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.ws-msg.send { color: var(--vscode-textLink-foreground, #3794ff); }
+.ws-msg.recv { color: var(--success); }
+
+.ws-msg .ws-ts {
+  color: var(--vscode-descriptionForeground);
+  margin-right: 4px;
+  font-size: 11px;
+}
+
+.ws-msg .ws-dir {
+  display: inline-block;
+  width: 20px;
+  font-weight: 600;
+}
