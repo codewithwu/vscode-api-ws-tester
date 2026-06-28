@@ -4,7 +4,7 @@ import { ApiTesterViewProvider } from './webview/ApiTesterViewProvider';
 export function activate(context: vscode.ExtensionContext) {
   console.log('API & WebSocket Tester is now active');
 
-  const provider = new ApiTesterViewProvider(context.extensionUri);
+  const provider = new ApiTesterViewProvider(context.extensionUri, context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(ApiTesterViewProvider.viewType, provider)
   );
@@ -15,8 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // Copy uses VS Code's built-in editor.action.clipboardCopyAction when invoked
-  // in the webview context, but we also wire a direct command for the Webview.
   context.subscriptions.push(
     vscode.commands.registerCommand('api-tester.copy', () => {
       vscode.commands.executeCommand('editor.action.clipboardCopyAction');

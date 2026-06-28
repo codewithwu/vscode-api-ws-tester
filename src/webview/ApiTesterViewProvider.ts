@@ -1,15 +1,23 @@
 import * as vscode from 'vscode';
 import { HttpService } from '../services/HttpService';
 import { WsService } from '../services/WsService';
-import { WebviewMessage, ExtMessage } from '../types';
+import { HistoryService } from '../services/HistoryService';
+import { CollectionService } from '../services/CollectionService';
+import { HistoryItem, WebviewMessage, ExtMessage } from '../types';
+import { uuid } from '../utils/id';
 
 export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'apiTester.view';
   private _view?: vscode.WebviewView;
   private _http = new HttpService();
   private _ws = new WsService();
+  private _history!: HistoryService;
+  private _collection!: CollectionService;
 
-  constructor(private readonly _extensionUri: vscode.Uri) {}
+  constructor(private readonly _extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
+    this._history = new HistoryService(context.globalState);
+    this._collection = new CollectionService(context.globalState);
+  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -27,7 +35,6 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
       this._handleMessage(msg);
     });
 
-    // WS event forwarding
     this._ws.on('status', (s: { state: string; error?: string }) => {
       this._post({ type: 'ws.status', payload: s as any });
     });
@@ -42,6 +49,20 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
         case 'http.send': {
           const res = await this._http.send(msg.payload);
           this._post({ type: 'http.response', payload: res });
+          // Append to history
+          const item: HistoryItem = {
+            id: uuid(),
+            kind: 'http',
+            method: msg.payload.method,
+            url: msg.payload.url,
+            headers: msg.payload.headers,
+            body: msg.payload.body,
+            bodyType: msg.payload.bodyType,
+            ts: Date.now(),
+            status: res.status,
+            time: res.time
+          };
+          await this._history.add(item);
           break;
         }
         case 'ws.connect': {
@@ -67,6 +88,47 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
               type: 'error',
               payload: { message: `WS send failed: ${(e as Error).message}` }
             });
+          }
+          break;
+        }
+        case 'history.list': {
+          this._post({ type: 'history.list', payload: { items: this._history.list() } });
+          break;
+        }
+        case 'history.save': {
+          await this._history.add(msg.payload.item);
+          break;
+        }
+        case 'collection.list': {
+          this._post({ type: 'collection.list', payload: { items: this._collection.list() } });
+          break;
+        }
+        case 'collection.save': {
+          const saved = await this._collection.save(msg.payload.item);
+          this._post({ type: 'collection.saved', payload: { item: saved } });
+          break;
+        }
+        case 'collection.delete': {
+          await this._collection.delete(msg.payload.id);
+          this._post({ type: 'collection.deleted', payload: { id: msg.payload.id } });
+          break;
+        }
+        case 'request.execute': {
+          // Re-load and execute a stored request
+          const stored =
+            msg.payload.source === 'history'
+              ? this._history.list().find((h) => h.id === msg.payload.id)
+              : this._collection.get(msg.payload.id);
+          if (stored && stored.url) {
+            const res = await this._http.send({
+              method: stored.method ?? 'GET',
+              url: stored.url,
+              headers: stored.headers ?? {},
+              body: stored.body,
+              bodyType: stored.bodyType ?? 'none',
+              auth: { type: 'none' }
+            });
+            this._post({ type: 'http.response', payload: res });
           }
           break;
         }
@@ -101,12 +163,13 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
 <body>
   <header class="title-bar">
     <span class="title">🔌 API & WebSocket Tester</span>
-    <span class="settings-icon" title="Settings">⚙</span>
   </header>
 
   <nav class="tabs">
     <button class="tab active" data-tab="http">HTTP</button>
     <button class="tab" data-tab="ws">WebSocket</button>
+    <button class="tab" data-tab="collections">Collections</button>
+    <button class="tab" data-tab="history">History</button>
   </nav>
 
   <main id="http-panel" class="panel active">
@@ -189,6 +252,16 @@ export class ApiTesterViewProvider implements vscode.WebviewViewProvider {
       <input type="text" id="ws-input" placeholder='{"type":"ping"}' />
       <button id="ws-send" class="btn-primary">Send</button>
     </div>
+  </main>
+
+  <main id="collections-panel" class="panel">
+    <div id="collections-list" class="list"></div>
+    <button id="collections-refresh" class="btn-secondary">Refresh</button>
+  </main>
+
+  <main id="history-panel" class="panel">
+    <div id="history-list" class="list"></div>
+    <button id="history-refresh" class="btn-secondary">Refresh</button>
   </main>
 
   <script src="${scriptUri}"></script>
