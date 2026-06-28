@@ -12,6 +12,18 @@ Install from [Open VSX Registry](https://open-vsx.org/extension/codewithwu-cn/vs
 code --install-extension codewithwu-cn.vscode-api-ws-tester
 ```
 
+Or install a local `.vsix` file (after `npm run package`):
+
+```bash
+code --install-extension vscode-api-ws-tester-0.1.2.vsix
+```
+
+To uninstall:
+
+```bash
+code --uninstall-extension codewithwu-cn.vscode-api-ws-tester
+```
+
 Or install the [Open VSX](https://marketplace.visualstudio.com/items?itemName=open-vsx.open-vsx) extension to search this and other Open VSX-published extensions directly from VS Code.
 
 ## Features

@@ -1,4 +1,5 @@
 node_modules/**
+!node_modules/ws/**
 src/**
 test/**
 dist/test/**
