@@ -54,6 +54,11 @@
         "command": "api-tester.disconnectWs",
         "title": "Disconnect WebSocket",
         "category": "API Tester"
+      },
+      {
+        "command": "api-tester.copy",
+        "title": "Copy",
+        "category": "API Tester"
       }
     ],
     "keybindings": [

@@ -14,6 +14,14 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.executeCommand('workbench.view.extension.apiTester.container');
     })
   );
+
+  // Copy uses VS Code's built-in editor.action.clipboardCopyAction when invoked
+  // in the webview context, but we also wire a direct command for the Webview.
+  context.subscriptions.push(
+    vscode.commands.registerCommand('api-tester.copy', () => {
+      vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+    })
+  );
 }
 
 export function deactivate() {}
