@@ -73,6 +73,21 @@
   // --- Send ---
   document.getElementById('http-send').addEventListener('click', sendHttp);
 
+  // Ctrl+Enter triggers send (intercept before VS Code's default)
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      const httpPanel = document.getElementById('http-panel');
+      const wsPanel = document.getElementById('ws-panel');
+      if (httpPanel.classList.contains('active')) {
+        sendHttp();
+      } else if (wsPanel.classList.contains('active')) {
+        sendWs();
+      }
+    }
+  });
+
   function sendHttp() {
     const method = document.getElementById('http-method').value;
     const url = document.getElementById('http-url').value.trim();
