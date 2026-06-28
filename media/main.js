@@ -9,6 +9,32 @@
       document.querySelectorAll('.panel').forEach((p) => {
         p.classList.toggle('active', p.id === target + '-panel');
       });
+
+      // Auto-rewrite URL protocol on tab switch
+      if (target === 'http') {
+        const url = document.getElementById('http-url').value.trim();
+        if (url.startsWith('ws://')) {
+          document.getElementById('http-url').value = 'http://' + url.slice(5);
+        } else if (url.startsWith('wss://')) {
+          document.getElementById('http-url').value = 'https://' + url.slice(6);
+        }
+        const wsUrl = document.getElementById('ws-url').value.trim();
+        if (wsUrl.startsWith('http://')) {
+          document.getElementById('ws-url').value = 'ws://' + wsUrl.slice(7);
+        } else if (wsUrl.startsWith('https://')) {
+          document.getElementById('ws-url').value = 'wss://' + wsUrl.slice(8);
+        }
+      } else if (target === 'ws') {
+        const wsUrl = document.getElementById('ws-url').value.trim();
+        if (!wsUrl) {
+          const httpUrl = document.getElementById('http-url').value.trim();
+          if (httpUrl.startsWith('http://')) {
+            document.getElementById('ws-url').value = 'ws://' + httpUrl.slice(7);
+          } else if (httpUrl.startsWith('https://')) {
+            document.getElementById('ws-url').value = 'wss://' + httpUrl.slice(8);
+          }
+        }
+      }
     });
   });
 
